@@ -1,0 +1,85 @@
+
+\documentclass[numberofslides]{AMSBeamer}
+%% Options: 
+%% numberofslides: show total number of slides
+%% noAMSLogo: do not show AMS Logo
+
+
+%\usepackage{import} %use includefrom instead import to use includeonly
+%% include only specific texfile:
+% \includeonly{subdirectory/texfile}
+%% include only labeled frame:
+% \includeonlyframes{title,label}
+
+
+%% decrease title font if necessary
+%\setbeamerfont{title}{series=\bfseries,size=\fontsize{14}{18}}
+
+%% margins for title can also be changed:
+% \makeatletter
+% \setlength\title@titlemargin{13mm}\setlength\title@institutemargin\title@titlemargin
+% \makeatother
+
+%% Title:
+\title[Short Title]{Full Title of the Presentation}
+
+%% Subtitle:
+% \subtitle{Subtitle}
+
+\author{Peter Trom}
+
+\institute[Autonomous Multisensor Systems Group]{
+	Autonomous Multisensor Systems Group \\
+	Institute for Intelligent Cooperating Systems \\
+	Faculty of Computer Science \\
+	Otto-von-Guericke-Universität, Magdeburg
+}
+\mode<presentation>{\keywords{Schlüsselwörter durch Komma getrennt}}
+
+\date{XX.YY.ZZZZ}%{Datum der Präsentation, \zB 1. Januar 2016}
+
+\begin{document}
+
+
+\section{Titel}
+\begin{frame}[label=title]
+	\maketitle
+\end{frame}
+
+
+\section{Test Slide}
+
+\begin{frame}[label=slidelabel]
+	\frametitle{\insertsectionhead}%
+	\begin{tikzframe}
+		%% show grid:
+		\makegrid
+		\node[anchor=north west,text width=3cm] at (3,4) {width: 160mm\\height: 77mm};
+	\end{tikzframe}
+    % \transfade<2->
+\end{frame}
+
+\begin{frame}[label=slidelabel]
+	\frametitle{\insertsectionhead}%
+	\begin{tikzframe}
+		%% show grid:
+		\node[anchor=north west,text width=3cm] at (1,7) {tikzframe lies on the background layer};
+	\end{tikzframe}
+	%
+	\makegridtp
+	\begin{textblock*}{30mm}(8cm,20mm)%
+		You can use textpos instead of tikz
+	\end{textblock*}%
+	\begin{textblock*}{70mm}(8cm,50mm)%
+		for textpos, you can use makegridtp \\
+		origin is the upper left corner
+	\end{textblock*}%
+	%
+	\Notes{
+		you can add separate todo notes here
+    }
+    % \transfade<2->
+\end{frame}
+
+
+\end{document}

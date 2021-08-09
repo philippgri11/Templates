@@ -69,6 +69,7 @@
 \setbeamercolor{itemize item}{fg=ovgu-inf-blue}
 \setbeamercolor{itemize subitem}{fg=ovgu-inf-blue}
 \setbeamercolor{itemize subsubitem}{fg=ovgu-inf-blue}
+\setbeamercolor{local structure}{fg=ovgu-inf-blue}
 
 % Margins
 % \setbeamersize{text margin left=0mm, text margin right=0mm,}

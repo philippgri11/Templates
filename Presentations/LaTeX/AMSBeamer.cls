@@ -3,16 +3,19 @@
 %%
 %% Author: Benjamin Noack
 %% Last Modified by: Benjamin Noack
-%% Date: 2021-08-04
+%% Date: 2021-09-08
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%% Changes
+% * headline moved into footline (stays on top of slide)
+
+
 %%% Identification:
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{AMSBeamer}[2021/08/04 AMS Beamer Style]
+\ProvidesClass{AMSBeamer}[2021/09/08 AMS Beamer Style]
 
 %%% Options:
-
 
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{beamer}}
 
@@ -37,6 +40,7 @@
 \usetikzlibrary{calc}
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 
 \useoutertheme{default}
 
@@ -50,7 +54,10 @@
 % \definecolor{stimulate}{RGB}{0 104 180}
 \definecolor{ovgu-inf-blue}{RGB}{0 104 180}
 
-\colorlet{standardcolor}{ovgu-inf-blue}
+\colorlet{AMSblue}{ovgu-inf-blue}
+\definecolor{AMSred}{RGB}{194,23,20}
+\definecolor{AMSgreen}{RGB}{0,120,38}
+\definecolor{AMSorange}{RGB}{243,147,35}
 
 % remove navigation symbols 
 \setbeamertemplate{navigation symbols}{}
@@ -69,7 +76,6 @@
 \setbeamercolor{itemize item}{fg=ovgu-inf-blue}
 \setbeamercolor{itemize subitem}{fg=ovgu-inf-blue}
 \setbeamercolor{itemize subsubitem}{fg=ovgu-inf-blue}
-\setbeamercolor{local structure}{fg=ovgu-inf-blue}
 
 % Margins
 % \setbeamersize{text margin left=0mm, text margin right=0mm,}
@@ -81,24 +87,27 @@
 
 % Definition of headline
 \setbeamertemplate{headline}{%
-    \ifnum \theframenumber=1%
-    \else%
-		\begin{tikzpicture}[inner sep=0pt, outer sep=0pt]
-			\useasboundingbox  (0,0) rectangle (160mm,10mm);%
-			\path (0,0) node[anchor=south west]{%
-					\ifAMSBeamer@AMSLogo\includegraphics{logos/AMShead.pdf}%
-				\else%
-					\includegraphics{logos/OVGUhead.pdf}%
-				\fi%
-			};
-			% 5.5mm would center text vertically, but 5mm looks better
-			\ifAMSBeamer@AMSLogo%
-				\path (4mm,5mm) node[anchor=west,text width=97mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};			
-			\else%
-				\path (4mm,5mm) node[anchor=west,text width=121mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};
-			\fi%
-		\end{tikzpicture}
-    \fi%    
+	\vspace{1cm}%
+	% definition of headline is moved into footline
+	% headline then stays on top of slide
+    % \ifnum \theframenumber=1%
+    % \else%
+	% 	\begin{tikzpicture}[inner sep=0pt, outer sep=0pt]
+	% 		\useasboundingbox  (0,0) rectangle (160mm,10mm);%
+	% 		\path (0,0) node[anchor=south west]{%
+	% 				\ifAMSBeamer@AMSLogo\includegraphics{logos/AMShead.pdf}%
+	% 			\else%
+	% 				\includegraphics{logos/OVGUhead.pdf}%
+	% 			\fi%
+	% 		};
+	% 		% 5.5mm would center text vertically, but 5mm looks better
+	% 		\ifAMSBeamer@AMSLogo%
+	% 			\path (4mm,5mm) node[anchor=west,text width=97mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};			
+	% 		\else%
+	% 			\path (4mm,5mm) node[anchor=west,text width=121mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};
+	% 		\fi%
+	% 	\end{tikzpicture}
+    % \fi%    
 }
 
 
@@ -113,6 +122,24 @@
 \setbeamertemplate{footline}{%
     \ifnum \theframenumber=1%
     \else%
+	% headline:
+		\begin{tikzpicture}[inner sep=0pt, outer sep=0pt,overlay, remember picture,shift={($(current page.south west)+(0,-0mm)$)}]%
+		\useasboundingbox  (0,0) rectangle (160mm,90mm);%
+		\path (0,90mm) node[anchor=north west]{%
+				\ifAMSBeamer@AMSLogo\includegraphics{logos/AMShead.pdf}%
+			\else%
+				\includegraphics{logos/OVGUhead.pdf}%
+			\fi%
+		};
+		% 5.5mm would center text vertically, but 5mm looks better
+		\ifAMSBeamer@AMSLogo%
+			\path (4mm,85mm) node[anchor=west,text width=97mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};			
+		\else%
+			\path (4mm,85mm) node[anchor=west,text width=121mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};
+		\fi%
+	\end{tikzpicture}%
+    %
+	% footline:
 		\ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
 		\begin{beamercolorbox}[sep=0pt,ht=0.3cm,wd=\paperwidth,leftskip=0.5cm,rightskip=0.5cm]{footlinecolor}
 		\vbox to0.3cm{\vfil\hbox{%
@@ -216,8 +243,10 @@
 \newdimen\pictwidth% width of picture
 \newdimen\pictheight% height of picture
 \pictwidth=160mm%
-\pictheight=77mm%
+\pictheight=78mm%
 % TikZ frame for absolute positioning
+% default value of inner sep is: inner sep=0.3333em
+\def\innersep{0.3333em}
 \newenvironment{tikzframe}{%
 	\begin{tikzpicture}[overlay, remember picture, shift={($(current page.south west)+(0,3mm)$)}, inner sep=0pt, outer sep=0pt]% shift to lower left corner and 3mm (footline) upwards
 		\useasboundingbox (0,0) rectangle (160mm,77mm);%	
@@ -265,7 +294,7 @@
 }
 
 \newcommand{\Notes}[1]{%
-\begin{tikzpicture}[overlay, remember picture, shift={($(current page.north east)+(-1mm,-2mm)$)}, inner sep=0pt, outer sep=0pt]%
-	\path (0,0) node[anchor=north east, inner sep=0pt, draw=red!50!black,thick, fill=white, text width=5cm,rounded corners=1mm,inner sep=2mm,font=\small]{#1};
+\begin{tikzpicture}[overlay, remember picture, shift={($(current page.north east)+(-1mm,-10mm)$)}, inner sep=0pt, outer sep=0pt]%
+	\path (0,0) node[anchor=north east, inner sep=0pt, draw=red!50!black,thick, fill=white, text width=5cm,rounded corners=1mm,inner sep=2mm,font=\small]{\tiny #1};
 \end{tikzpicture}%
 }

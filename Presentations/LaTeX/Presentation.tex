@@ -24,7 +24,7 @@
 \title[Short Title]{Full Title of the Presentation}
 
 %% Subtitle:
-% \subtitle{Subtitle}
+\subtitle{Subtitle}
 
 \author{Peter Trom}
 
@@ -54,7 +54,7 @@
 	\begin{tikzframe}
 		%% show grid:
 		\makegrid
-		\node[anchor=north west,text width=3cm] at (3,4) {width: 160mm\\height: 77mm};
+		\node[anchor=north west,text width=3cm] at (3,4) {width: \SI{160}{mm}\\height: \SI{78}{mm}};
 	\end{tikzframe}
     % \transfade<2->
 \end{frame}
@@ -75,6 +75,22 @@
 		origin is the upper left corner
 	\end{textblock*}%
 	%
+	\Notes{
+		you can add separate todo notes here
+    }
+    % \transfade<2->
+\end{frame}
+
+\begin{frame}[label=slidelabel]
+	\frametitle{\insertsectionhead}%
+	%
+	% \makegridtp
+
+
+	\hfil
+	The folder \emph{pages} contains an AI template to create slides. The slide area is \SI{160}{mm} $\times$ \SI{78}{mm}.\newline
+
+
 	\Notes{
 		you can add separate todo notes here
     }

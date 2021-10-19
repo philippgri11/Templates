@@ -1,12 +1,8 @@
 # Templates
 
-## LaTeX Beamer Template
+This repository provides templates for the [Autonomous Multisensor Systems](https://ams.ovgu.de) group.
 
 ## Todos
 
-- [ ] Colors for itemize and enumerate
-- [ ] Corresponding PowerPoint Template
-- [x] Seminar Template
 - [ ] BA/MA Template
-- [x] Poster Template
-- [x] DE Project Template
+

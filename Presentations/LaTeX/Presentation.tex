@@ -47,10 +47,18 @@
 \end{frame}
 
 
-\section{Test Slide}
+\section{Test Slides}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Slide using TikZ
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Test Slide Using TikZ}
 
 \begin{frame}[label=slidelabel]
-	\frametitle{\insertsectionhead}%
+	\frametitle{\insertsubsectionhead}%
 	\begin{tikzframe}
 		%% show grid:
 		\makegrid
@@ -59,8 +67,16 @@
     % \transfade<2->
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Slide using textblocks
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Test Slide Using Textblocks}
+
 \begin{frame}[label=slidelabel]
-	\frametitle{\insertsectionhead}%
+	\frametitle{\insertsubsectionhead}%
 	\begin{tikzframe}
 		%% show grid:
 		\node[anchor=north west,text width=3cm] at (1,7) {tikzframe lies on the background layer};
@@ -81,8 +97,16 @@
     % \transfade<2->
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Slide without tikz or textblock
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Test Slide Without TikZ or Textblocks}
+
 \begin{frame}[label=slidelabel]
-	\frametitle{\insertsectionhead}%
+	\frametitle{\insertsubsectionhead}%
 	%
 	% \makegridtp
 
@@ -97,5 +121,51 @@
     % \transfade<2->
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Thank you slide
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begingroup% to remove header and footline and include style of first slide
+\setbeamertemplate{header}{}
+\setbeamertemplate{footline}{}
+\begin{frame}[label=overview]
+	\frametitle{Thank You For Your Attention!}%
+	\begin{tikzpicture}[overlay, remember picture, shift={(current page.south west)}, inner sep=0pt, outer sep=0pt]
+
+		\useasboundingbox (0,0) rectangle (160mm,90mm);%
+
+		\node[anchor=south east] at (150mm,7mm) {\includegraphics[width=50mm]{logos/AMS.pdf}};%
+
+		\fill[ovgu-inf-blue] (0,90mm) rectangle (160mm,55mm);
+		\node[anchor=north east] at (160mm,90mm) {\includegraphics{./logos/otto.pdf}};
+		% \makeatletter
+		\node[anchor=north west] at (14mm,87mm) {\includegraphics[height=11mm]{./logos/Signet_INF_1_inv.pdf}};	
+		% \makeatother
+		\node[anchor=south west, text width=160mm-28mm] at (14mm,55mm+5mm) {\color{white}\usebeamerfont{title}\inserttitle\par};
+
+		\node[anchor=north west, text width=160mm-28] at (14mm,55mm-15mm) {%
+			{\usebeamerfont{title}\color{AMSblue}\insertframetitle\par}%
+		};			
+
+		\node[anchor=south west, text width=160mm-28] at (14mm,7mm) {%
+			\usebeamerfont{institute}%
+			\textbf{Benjamin Noack}\par%
+
+			\begin{tabular}[t]{@{}l@{\hspace{3pt}}p{.32\textwidth}@{}}
+				Web: & \url{ams.ovgu.de}\\[1mm]
+				Mail: & \url{benjamin.noack@ovgu.de} \\[1mm]
+				% Phone: & +49 391 67 57580 
+			\end{tabular}%
+		};			
+
+	\end{tikzpicture}
+    % \Notes{
+
+    % }
+    \transfade[duration=5]%<2->
+\end{frame}	
+\endgroup
 
 \end{document}

@@ -5,4 +5,5 @@ This repository provides templates for the [Autonomous Multisensor Systems](http
 ## Todos
 
 - [ ] BA/MA Template
+- [ ] LaTeX Presentation Template: Add Section Slide
 

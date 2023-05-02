@@ -47,12 +47,12 @@
     \fontshape{sl}
     \begin{center}
       ~\\[4cm]
-      \fontsize{25}{30}\selectfont
-      \@projecttype\\
-      \fontsize{34}{43}\selectfont
-      \@projectname\\
-      \fontsize{25}{30}\selectfont
-      \@date\\
+      \fontsize{25}{30}\selectfont\@projecttype%
+      \\\bigskip%
+      \fontsize{34}{43}\selectfont\@projectname\fontsize{25}{30}\selectfont%
+      \\\bigskip%
+      \fontsize{25}{30}\selectfont\@date%
+      \\%
 
       \fontseries{m}%
       \fontshape{n}

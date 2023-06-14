@@ -1,0 +1,145 @@
+% choose between class option BA, MA, PhD
+\documentclass[english,algorithms,reviews,examples,PhD]{amsthesis}
+
+
+
+%%%%%%%%%%%%%%%%%%%%
+% Edit notation.tex 
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%
+% Packages 
+%%%%%%%%%%%%
+
+\usepackage{mathmacros}
+\usepackage{lipsum}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Document properties
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Title of Thesis}
+\degree{Dipl.-Inf.}
+\author{Max Mustermann}
+\birthdate{01.01.2021}
+\birthplace{Musterhausen}
+\initdate{2023}{01}{01} % date of thesis
+
+\reviewerA{Prof. Dipl. Inf. Gutachter 1}
+\reviewerB{Prof. Dipl. Inf. Gutachter 2}
+\reviewerC{Prof. Dipl. Inf. Gutachter 3}
+% \reviewerD{Prof. Dipl. Inf. Gutachter 4}
+
+% \firstsupervisor{Prof. Dr.-Ing. Benjamin Noack}
+
+
+\addbibresource{ams.bib}
+\addbibresource{own.bib}
+\addbibresource{students.bib}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Document
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+    \maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Frontmatter
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \frontmatter
+
+    \setcounter{tocdepth}{2}
+    \tableofcontents
+    
+    \begin{otherlanguage}{ngerman} % ensure German babel
+    \chapter{Zusammenfassung}    
+    \lipsum[1-5]  
+    \end{otherlanguage}  
+
+    \begin{otherlanguage}{english} % ensure English babel
+    \chapter{Abstract}
+    \lipsum[5-9]  
+    \end{otherlanguage}
+
+    \addcontentsline{toc}{chapter}{\listfigurename}
+    \listoffigures
+  
+    % \addcontentsline{toc}{chapter}{\listtablename}
+    % \listoftables  
+
+    \input{notation.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Mainmatter
+%%%%%%%%%%%%%%%%%%%%%%%%
+    \mainmatter
+  
+    \chapter{Introduction}
+    \lipsum[1]
+    \section{Motivation}
+        \lipsum[1-7]
+    \section{Structure of Thesis}
+        \lipsum[1-7]        
+
+    \chapter{Background}
+        \lipsum[1-2]
+        \cite{Automatica17_Noack,Fusion23_Funk,ACC11_Noack,ACC18_Rosenthal}
+        \citeOwn{mustermann,mustermann2,mustermann3}%\addtocategory{own}{mustermann,mustermann2,mustermann3}
+        \citeStudent{doe,doe2,doe3}%\addtocategory{students}{doe,doe2,doe3}        
+
+
+    \chapter{One Central Chapter}
+    \lipsum[11]
+
+    \section{First Section}
+    \lipsum[11]
+    \begin{figure}[h]
+        --- Empty Figure ---
+        \caption{A Figure}
+    \end{figure}
+
+    \lipsum[11-13]
+
+    \section{Second Section}
+    \lipsum[11]
+    \begin{figure}[ht]
+        --- Empty Figure ---
+        \caption{Another Figure}
+    \end{figure}
+    \lipsum[11]   
+
+    \chapter{Conclussions}
+    \lipsum[95-99]    
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \appendix
+
+    \chapter{First Appendix}
+    \lipsum[1]
+
+    \chapter{Second Appendix}
+    \lipsum[2]
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+% Backmatter
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+    \backmatter
+
+
+    % Bibliographies
+    \printbibliography[heading=bibintoc,notcategory={own},notcategory={students}]
+    \cleardoublepage
+    \newrefcontext[labelprefix=O]
+    \printbibliography[heading=bibintoc,category={own},title=Own Publications,resetnumbers=true]
+    \cleardoublepage
+    \newrefcontext[labelprefix=S]
+    \printbibliography[heading=bibintoc,category={students},title=Supervised Theses,resetnumbers=true]
+
+\end{document}
+

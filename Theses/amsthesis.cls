@@ -33,7 +33,7 @@
 %%           Main declarations
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\LoadClass[a4paper,twoside,openright,numbers=noenddot]{book}
+\LoadClass[a4paper,twoside,openright,numbers=noenddot,12pt]{book}
 
 \RequirePackage{amsmath,amsfonts,amssymb}
 \RequirePackage[usenames, dvipsnames]{xcolor}
@@ -73,7 +73,7 @@
 	includeheadfoot]{geometry}
 
 \renewcommand{\baselinestretch}{1.2}
-\renewcommand{\normalsize}{\fontsize{12pt}{14pt}\selectfont}
+% \renewcommand{\normalsize}{\fontsize{12pt}{14pt}\selectfont}
 
 % \newcommand{\degree}[1]{\def\@degree{#1}}
 \newcommand{\birthdate}[1]{\def\@birthdate{#1}}

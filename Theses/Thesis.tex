@@ -50,18 +50,20 @@
 
     \frontmatter
 
-    \setcounter{tocdepth}{2}
-    \tableofcontents
-    
+  
+    \begin{otherlanguage}{english} % ensure English babel
+        \chapter{Abstract}
+        \lipsum[5-9]  
+    \end{otherlanguage}
+
     \begin{otherlanguage}{ngerman} % ensure German babel
-    \chapter{Zusammenfassung}    
-    \lipsum[1-5]  
+        \chapter{Zusammenfassung}    
+        \lipsum[1-5]  
     \end{otherlanguage}  
 
-    \begin{otherlanguage}{english} % ensure English babel
-    \chapter{Abstract}
-    \lipsum[5-9]  
-    \end{otherlanguage}
+    \setcounter{tocdepth}{2}
+    \addcontentsline{toc}{chapter}{\contentsname}
+    \tableofcontents
 
     \addcontentsline{toc}{chapter}{\listfigurename}
     \listoffigures

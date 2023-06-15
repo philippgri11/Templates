@@ -43,6 +43,8 @@
 \RequirePackage{epstopdf}					% include of .eps files in pdflatex, requires a ghostscript installation
 \RequirePackage[main=english,ngerman]{babel}				% Lineending in english
 
+\RequirePackage{lmodern}
+
 \RequirePackage{caption,subcaption}			% Subcaption and subfigures 
 % Caption formatting
 \captionsetup{format=hang,justification=justified,singlelinecheck=false,labelfont={sf,bf}}

@@ -3,17 +3,22 @@
 %%
 %% Author: Benjamin Noack
 %% Last Modified by: Benjamin Noack
-%% Date: 2021-09-08
+%% Date: 2022-06-27
 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%% Changes
+% Changes 2022/06/27
+% * bounding box in tikzframe corrected
+% * pictheight/pictwidth renamed to slideheight/slidewidth
+% * custom bullet colors added
+% Changes 2021/09/08
 % * headline moved into footline (stays on top of slide)
 
 
 %%% Identification:
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{AMSBeamer}[2021/09/08 AMS Beamer Style]
+\ProvidesClass{AMSBeamer}[2022/06/27 AMS Beamer Style]
 
 %%% Options:
 
@@ -32,6 +37,14 @@
 \ProcessOptions\relax
 
 
+% show header on slide
+\newif\ifAMSBeamer@showheader
+\AMSBeamer@showheadertrue
+
+% show footer on slide
+\newif\ifAMSBeamer@showfooter
+\AMSBeamer@showfootertrue
+
 \LoadClass[aspectratio=169,10pt]{beamer}
 
 \RequirePackage{ifthen}
@@ -41,6 +54,7 @@
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\RequirePackage{xparse}
 
 \useoutertheme{default}
 
@@ -73,9 +87,26 @@
 \setbeamercolor{frametitle}{fg=ovgu-inf-blue}
 % \setbeamercolor{frametitle}{fg=ovgu-inf-blue,bg=red}
 
-\setbeamercolor{itemize item}{fg=ovgu-inf-blue}
-\setbeamercolor{itemize subitem}{fg=ovgu-inf-blue}
-\setbeamercolor{itemize subsubitem}{fg=ovgu-inf-blue}
+% set bullet color in itemized
+% \setbeamercolor{itemize item}?
+\setbeamercolor{item}{fg=ovgu-inf-blue}
+\setbeamercolor{subitem}{fg=ovgu-inf-blue}
+\setbeamercolor{subsubitem}{fg=ovgu-inf-blue}
+
+% manually set bullet color, e.g., \item<AMSred@1->
+\newenvironment{AMSgreenenv}{\only{\setbeamercolor{itemize item}{fg=AMSgreen}\usebeamerfont{color=AMSgreen}}}{}
+\newenvironment{AMSredenv}{\only{\setbeamercolor{itemize item}{fg=AMSred}}}{}
+\newenvironment{AMSorangeenv}{\only{\setbeamercolor{itemize item}{fg=AMSorange}}}{}
+\setbeamercolor{alerted text}{fg=AMSred}
+\setbeamercolor{example text}{fg=AMSgreen}
+
+% content size
+% slide size is 160mm x 90mm including header and footer
+% but the content has only 160mm x 78mm
+\newdimen\slidewidth% width of content
+\newdimen\slideheight% height of content
+\slidewidth=160mm%
+\slideheight=78mm%
 
 % Margins
 % \setbeamersize{text margin left=0mm, text margin right=0mm,}
@@ -122,24 +153,26 @@
 \setbeamertemplate{footline}{%
     \ifnum \theframenumber=1%
     \else%
-	% headline:
-		\begin{tikzpicture}[inner sep=0pt, outer sep=0pt,overlay, remember picture,shift={($(current page.south west)+(0,-0mm)$)}]%
-		\useasboundingbox  (0,0) rectangle (160mm,90mm);%
-		\path (0,90mm) node[anchor=north west]{%
-				\ifAMSBeamer@AMSLogo\includegraphics{logos/AMShead.pdf}%
+	% headline (heigh: 10mm, blue line ends at 9mm):
+		\ifAMSBeamer@showheader%
+			\begin{tikzpicture}[inner sep=0pt, outer sep=0pt,overlay, remember picture,shift={($(current page.south west)+(0,-0mm)$)}]%
+			\useasboundingbox  (0,0) rectangle (160mm,90mm);%
+			\path (0,90mm) node[anchor=north west]{%
+					\ifAMSBeamer@AMSLogo\includegraphics{logos/AMShead.pdf}%
+				\else%
+					\includegraphics{logos/OVGUhead.pdf}%
+				\fi%
+			};
+			% 5.5mm would center text vertically, but 5mm looks better
+			\ifAMSBeamer@AMSLogo%
+				\path (4mm,85mm) node[anchor=west,text width=97mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};			
 			\else%
-				\includegraphics{logos/OVGUhead.pdf}%
+				\path (4mm,85mm) node[anchor=west,text width=121mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};
 			\fi%
-		};
-		% 5.5mm would center text vertically, but 5mm looks better
-		\ifAMSBeamer@AMSLogo%
-			\path (4mm,85mm) node[anchor=west,text width=97mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};			
-		\else%
-			\path (4mm,85mm) node[anchor=west,text width=121mm]{\usebeamercolor[fg]{frametitle}\usebeamerfont{frametitle}\strut\insertframetitle\strut\par};
+		\end{tikzpicture}%
 		\fi%
-	\end{tikzpicture}%
     %
-	% footline:
+	% footline (height 3mm):
 		\ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
 		\begin{beamercolorbox}[sep=0pt,ht=0.3cm,wd=\paperwidth,leftskip=0.5cm,rightskip=0.5cm]{footlinecolor}
 		\vbox to0.3cm{\vfil\hbox{%
@@ -212,6 +245,19 @@
 	\end{tikzpicture}
 }
 
+% Section slide
+\newcommand*{\sectionslide}[2][]%
+{%
+\AMSBeamer@showheaderfalse%
+\begin{frame}
+	\begin{tikzframe}
+		\path (1.3,4.2) node[anchor=south west, font=\large]{#2};
+		\path (1.3,3.7) node[anchor=north west, text width=\slidewidth-1.3, font=\Large\bfseries\color{AMSblue}]{\ifx &#1& \inserttitle\else #1\fi};
+	\end{tikzframe}
+\end{frame}
+\AMSBeamer@showheadertrue%
+}
+
 
 % half-transparent pause
 \setbeamercovered{transparent=45}
@@ -231,33 +277,22 @@
 \RequirePackage{siunitx}
 
 
-% tikz frame: 
+% TikZ frame for absolute positioning:
 % always at the same position
 % no inner and outer sep of nodes
-
-% \pgfdeclarelayer{background}
-% \pgfdeclarelayer{foreground}
-% \pgfdeclarelayer{top}
-% \pgfsetlayers{background,main,foreground,top}
-
-\newdimen\pictwidth% width of picture
-\newdimen\pictheight% height of picture
-\pictwidth=160mm%
-\pictheight=78mm%
-% TikZ frame for absolute positioning
 % default value of inner sep is: inner sep=0.3333em
 \def\innersep{0.3333em}
 \newenvironment{tikzframe}{%
 	\begin{tikzpicture}[overlay, remember picture, shift={($(current page.south west)+(0,3mm)$)}, inner sep=0pt, outer sep=0pt]% shift to lower left corner and 3mm (footline) upwards
-		\useasboundingbox (0,0) rectangle (160mm,77mm);%	
+		\useasboundingbox (0,0) rectangle (\slidewidth,\slideheight);%	
 }{%
 	\end{tikzpicture}
 }
 
 % Grid for use in TikZ frame
 \newcommand{\makegrid}{%
-	\draw[style=help lines,step=0.1,opacity=0.2] (0,0) grid (\pictwidth,\pictheight);
-	\draw[very thin,step=1,opacity=0.2] (0,0) grid (\pictwidth,\pictheight);
+	\draw[style=help lines,step=0.1,opacity=0.2] (0,0) grid (\slidewidth,\slideheight);
+	\draw[very thin,step=1,opacity=0.2] (0,0) grid (\slidewidth,\slideheight);
 	\foreach \y in {1,2,...,7}
 	{
 		\draw (2,\y) node[left,gray,opacity=0.5]{\color{gray}\y};
@@ -271,8 +306,8 @@
 % Grid for use with textpos
 \newcommand{\makegridtp}{%
 	\begin{tikzframe}
-		\draw[style=help lines,step=0.1,opacity=0.2] (0,0) grid (\pictwidth,\pictheight);
-		\draw[very thin,step=1,opacity=0.2,yshift=-3mm] (0,0) grid (\pictwidth,\pictheight+3mm);
+		\draw[style=help lines,step=0.1,opacity=0.2] (0,0) grid (\slidewidth,\slideheight);
+		\draw[very thin,step=1,opacity=0.2,yshift=-3mm] (0,0) grid (\slidewidth,\slideheight+3mm);
 		\foreach \y in {1,2,...,8}
 		{
 			\draw (2, 87mm - \y cm) node[left,gray,opacity=0.5]{\color{gray}\y};

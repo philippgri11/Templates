@@ -1,4 +1,3 @@
-
 \documentclass[numberofslides]{AMSBeamer}
 %% Options: 
 %% numberofslides: show total number of slides
@@ -21,12 +20,12 @@
 % \makeatother
 
 %% Title:
-\title[Short Title]{Full Title of the Presentation}
+\title[Navigation and Localization]{Navigation and Localization of the Hamster Robot}
 
 %% Subtitle:
-\subtitle{Subtitle}
+%\subtitle{Subtitle}
 
-\author{Peter Trom}
+\author{Wiebke Outzen, Johnson Yarlagadda, Phillipp Grill and  Undine Holst}
 
 \institute[Autonomous Multisensor Systems Group]{
 	Autonomous Multisensor Systems Group \\
@@ -36,69 +35,17 @@
 }
 \mode<presentation>{\keywords{Schlüsselwörter durch Komma getrennt}}
 
-\date{XX.YY.ZZZZ}%{Datum der Präsentation, \zB 1. Januar 2016}
+\date{14.11.2023}%{Datum der Präsentation, \zB 1. Januar 2016}
 
 \begin{document}
 
 
-\section{Titel}
 \begin{frame}[label=title]
 	\maketitle
 \end{frame}
 
 
-\section{Test Slides}
 
-% Use this command for section slides:
-\sectionslide[Title of Topic (Default is title of presentation)]{This is the section or subtitle}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Slide using TikZ
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Test Slide Using TikZ}
-
-\begin{frame}[label=slidelabel]
-	\frametitle{\insertsubsectionhead}%
-	\begin{tikzframe}
-		%% show grid:
-		\makegrid
-		\node[anchor=north west,text width=3cm] at (3,4) {width: \SI{160}{mm}\\height: \SI{78}{mm}};
-	\end{tikzframe}
-    % \transfade<2->
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-% Slide using textblocks
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Test Slide Using Textblocks}
-
-\begin{frame}[label=slidelabel]
-	\frametitle{\insertsubsectionhead}%
-	\begin{tikzframe}
-		%% show grid:
-		\node[anchor=north west,text width=3cm] at (1,7) {tikzframe lies on the background layer};
-	\end{tikzframe}
-	%
-	\makegridtp
-	\begin{textblock*}{30mm}(8cm,20mm)%
-		You can use textpos instead of tikz
-	\end{textblock*}%
-	\begin{textblock*}{70mm}(8cm,50mm)%
-		for textpos, you can use makegridtp \\
-		origin is the upper left corner
-	\end{textblock*}%
-	%
-	\Notes{
-		you can add separate todo notes here
-    }
-    % \transfade<2->
-\end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -106,22 +53,254 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Test Slide Without TikZ or Textblocks}
 
-\begin{frame}[label=slidelabel]
-	\frametitle{\insertsubsectionhead}%
-	%
-	% \makegridtp
+\begin{frame}[label=agenda]
+  \frametitle{Agenda}
+   \tableofcontents
+\end{frame}
 
+\section{Familiarization}
+\begin{frame}[label=agenda]
+	\frametitle{\insertsectionhead}%
+    \begin{itemize}
+        \item ROS structure
+        \item Controlling the robot via keyboard/joystick
+        \item Teleop\_twist
+    \end{itemize}
+    \vspace{1cm}
+    \begin{figure}
+        \centering
+        \includegraphics[width=12cm]{Presentations/LaTeX/images/Teleop_twist.png}
+        \caption{Structure of the nodes}
+    \end{figure}
+\end{frame}
+%---------------------------------------------------------------------
 
-	\hfil
-	The folder \emph{pages} contains an AI template to create slides. The slide area is \SI{160}{mm} $\times$ \SI{78}{mm}.\newline
+\section{Generate a map}
+\begin{frame}[label=agenda]
+	\frametitle{\insertsectionhead}%
+    \begin{minipage}{0.5\textwidth}
+        \begin{itemize}
+            \item Slam\_gmapping
+            \item Drive with controller until map in rviz is clear
+            \item With \texttt{map\_server} \texttt{map\_saver}
+        \end{itemize}
+    \end{minipage}%
+    \begin{minipage}{0.5\textwidth}
+        \begin{figure}
+            \centering
+                \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/map334.jpg}
+                \caption{Map of Room 334}
+            \label{fig:enter-label}
+        \end{figure}
+        
+    \end{minipage}  
+\end{frame}
+%---------------------------------------------------------------------
 
+\section{Setup of the navstack}
+\begin{frame}[label=agenda]
+	\frametitle{\insertsectionhead}%
+        \begin{itemize}
+        \item Followed ROS tutorial
+        \item First with default planners
+            \begin{itemize}
+                \item Local: \ \texttt{base\_local\_planner/TrajectoryPlannerROS}
+                \item Global: \texttt{navfn/NavfnROS}
+            \end{itemize}
+        \item New repo hamster\textunderscore2dnav
+    \end{itemize}
 
-	\Notes{
-		you can add separate todo notes here
-    }
-    % \transfade<2->
+        \begin{figure}
+                \centering
+                \includegraphics[width=0.7\linewidth]{Presentations/LaTeX/images/nav_stack_tutorial.png}
+                \caption{Navigation Stack on a Robot}
+                \label{fig:enter-label}
+        \end{figure}
+\end{frame}
+%---------------------------------------------------------------------
+
+\section{The first challenges}
+\begin{frame}[label=agenda]
+	\frametitle{\insertsectionhead}%
+\begin{itemize}
+  \item Overwriting of map:
+  \begin{itemize}
+    \item During trying out \texttt{move\_base.launch}
+    \item Solution: kill \texttt{slam\_gmapping}
+  \end{itemize}
+  \item Planner was not supporting Ackermann, 2 options:
+  \begin{itemize}
+    \item \texttt{sbpl\_lattice\_planner}
+    \item \texttt{teb\_local\_planner}
+  \end{itemize}
+\end{itemize}
+
+\end{frame}
+%---------------------------------------------------------------------
+\section{SBPL planner integration}
+\begin{frame}[label=agenda]
+	\frametitle{\insertsectionhead}%
+    \begin{minipage}{0.7\textwidth}
+        \begin{itemize}
+            \item No tutorial
+            \begin{itemize}
+                \item Installed node and tried to integrate it
+            \end{itemize}
+            \item SBPL requires motion primitive file
+            \begin{itemize}
+                \item Was not provided by Cogniteam
+                \item Generation by matlab script, but just for robots turning in place
+            \end{itemize}
+        \end{itemize}
+    \end{minipage}%
+    \begin{minipage}{0.3\textwidth}
+        \begin{figure}
+            \includegraphics[width = \textwidth]{Presentations/LaTeX/images/mprim.jpeg}
+            \caption{mprim file}
+        \end{figure}
+    \end{minipage}
+\end{frame}
+%---------------------------------------------------------------------
+\section{TEB planner integration}
+\begin{frame}[label=agenda]
+	\frametitle{\insertsectionhead}%
+     \begin{minipage}{0.7\textwidth}
+
+\begin{itemize}
+  \item Utilizes the Timed Elastic Band method for path planning.
+  \item Accommodates non-holonomic and kinematic constraints of vehicles.
+  \item Supports obstacle avoidance using costmaps.
+  \item Offers a variety of customizable parameters for tailored planning.
+  \item Compatible with ROS \texttt{move\_base} node.
+\end{itemize}
+    \end{minipage}%
+    \begin{minipage}{0.3\textwidth}
+        \vspace{1cm}
+
+        \begin{figure}
+            \centering
+            \includegraphics[width=1\linewidth]{Presentations/LaTeX/images/teb.png}
+            \caption{TEB planner}
+            \label{fig:enter-label}
+        \end{figure}
+    \end{minipage}
+\end{frame}
+%---------------------------------------------------------------------
+\section{Challenge: localization}
+\begin{frame}[label=agenda]
+	\frametitle{\insertsectionhead}%
+     \begin{itemize}
+        \item Inaccurate odometry provided by Cogniteam
+        \begin{itemize}
+            \item Durch Ackermann-Steuerung funktioniert Lokalisation durch Odometrie nicht
+            \item Lokalisation soll nur durch LaserScan funktionieren
+        \end{itemize}
+        \item \texttt{laser\_scan\_matcher}
+        \begin{itemize}
+            \item Create fake odometry to be provided to amcl for localization
+        \end{itemize}
+     \end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------
+%\section{}
+%\begin{frame}[label=agenda]
+%	\frametitle{\insertsectionhead}%
+% \begin{figure}[h!]
+%   \centering
+%   \includemedia[
+%     width=0.6\linewidth,
+%     height=0.45\linewidth,
+%     activate=pageopen,
+%     addresource=Presentations/LaTeX/images/Video.MOV, % Pfad zu Ihrer Videodatei
+%     flashvars={
+%       source=Presentations/LaTeX/images/Video.MOV % Der Dateiname muss nach 'addresource' wiederholt werden
+%       &autoPlay=true % Video wird automatisch abgespielt, wenn das PDF geöffnet wird
+%     }
+%   ]{}{VPlayer.swf}
+%   \caption{Demonstration des TEB Local Planners.}
+% \end{figure}
+%\end{frame}
+
+%---------------------------------------------------------------------
+\section{TEB parametrization}
+\begin{frame}{label=agenda}
+    \frametitle{\insertsectionhead}
+    \begin{itemize}
+        \item Minimum turning radius
+        \item Footprint model (point)
+        \item Publish feedback
+        \item Maximum acceleration
+        \item Wheelbase
+        \item Goal tolerance (angle and euclidean distance)
+        \item Min\_obstacle\_dist
+
+    \end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------
+\section{Emergency Stop}
+\begin{frame}{label=agenda}
+    \frametitle{\insertsectionhead}
+    \begin{minipage}{0.4\textwidth}
+        \begin{itemize}
+            \item Robot stops when there are points registered:
+            \begin{itemize}
+                \item Between min\_angle and max\_angle
+                \item Nearer than obstacle\_distance
+            \end{itemize}
+            \item \texttt{twist\_mux} to get correct priorities for input
+        \end{itemize}
+    \end{minipage}%
+    \begin{minipage}{0.6\textwidth}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\textwidth]{Presentations/LaTeX/images/twist_mux.jpeg}
+            \caption{Structure of the twist\_mux}
+            \label{fig:enter-label}
+        \end{figure}
+    \end{minipage}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{label=agenda}
+    \frametitle{\insertsectionhead}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/estop-normal.jpeg}
+    \end{center}
+\end{frame}
+
+%---------------------------------------------------------------------
+\begin{frame}{label=agenda}
+    \frametitle{\insertsectionhead}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/estop-ausnahmefall.jpeg}
+    \end{center}
+\end{frame}
+
+%---------------------------------------------------------------------
+\section{Point Cloud}
+\begin{frame}{label=agenda}
+    \frametitle{\insertsectionhead}
+    \begin{itemize}
+        \item Camera doesn’t acquire point cloud data but depth images
+        \item Hardware does not allow working with point clouds
+        \item If hardware allows using point clouds: package laserscan-to-pointcloud
+        \item Implement nodes that subscribe to data input and publish LaserScan data to next node (emergency stop)
+
+    \end{itemize}
+\end{frame}
+
+%---------------------------------------------------------------------
+\section{Battery Warning}
+\begin{frame}{label=agenda}
+    \frametitle{\insertsectionhead}
+    \begin{itemize}
+        \item Battery suddenly died
+        \item Warning for battery value below 3.4V
+        \item Error for battery value 3 consecutive times below 3.4V
+    \end{itemize}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -152,16 +331,7 @@
 			{\usebeamerfont{title}\color{AMSblue}\insertframetitle\par}%
 		};			
 
-		\node[anchor=south west, text width=160mm-28] at (14mm,7mm) {%
-			\usebeamerfont{institute}%
-			\textbf{Benjamin Noack}\par%
-
-			\begin{tabular}[t]{@{}l@{\hspace{3pt}}p{.32\textwidth}@{}}
-				Web: & \url{ams.ovgu.de}\\[1mm]
-				Mail: & \url{benjamin.noack@ovgu.de} \\[1mm]
-				% Phone: & +49 391 67 57580 
-			\end{tabular}%
-		};			
+	
 
 	\end{tikzpicture}
     % \Notes{

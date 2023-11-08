@@ -54,6 +54,7 @@
 \RequirePackage[absolute,overlay]{textpos}
 \RequirePackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{media9}
 \RequirePackage{xparse}
 
 \useoutertheme{default}

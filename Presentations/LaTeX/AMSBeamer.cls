@@ -334,3 +334,5 @@
 	\path (0,0) node[anchor=north east, inner sep=0pt, draw=red!50!black,thick, fill=white, text width=5cm,rounded corners=1mm,inner sep=2mm,font=\small]{\tiny #1};
 \end{tikzpicture}%
 }
+
+\setcounter{tocdepth}{1}

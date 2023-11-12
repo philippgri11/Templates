@@ -35,7 +35,7 @@
 }
 \mode<presentation>{\keywords{Schlüsselwörter durch Komma getrennt}}
 
-\date{14.11.2023}%{Datum der Präsentation, \zB 1. Januar 2016}
+\date{13.11.2023}%{Datum der Präsentation, \zB 1. Januar 2016}
 
 \begin{document}
 
@@ -60,7 +60,7 @@
 \end{frame}
 
 \section{Familiarization}
-\begin{frame}[label=agenda]
+\begin{frame}[label=familiarization]
 	\frametitle{\insertsectionhead}%
     \begin{itemize}
         \item ROS structure
@@ -74,16 +74,18 @@
         \caption{Structure of the nodes}
     \end{figure}
 \end{frame}
+
 %---------------------------------------------------------------------
 
-\section{Generate a map}
-\begin{frame}[label=agenda]
+\subsection{Generate a map}
+\begin{frame}[label=map]
 	\frametitle{\insertsectionhead}%
     \begin{minipage}{0.5\textwidth}
+        \textbf{\insertsubsectionhead}
         \begin{itemize}
             \item Slam\_gmapping
             \item Drive with controller until map in rviz is clear
-            \item With \texttt{map\_server} \texttt{map\_saver}
+            \item \texttt{map\_server} \texttt{map\_saver}
         \end{itemize}
     \end{minipage}%
     \begin{minipage}{0.5\textwidth}
@@ -91,15 +93,26 @@
             \centering
                 \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/map334.jpg}
                 \caption{Map of Room 334}
-            \label{fig:enter-label}
+            \label{fig:map334}
         \end{figure}
         
     \end{minipage}  
 \end{frame}
+
+%---------------------------------------------------------------------
+\section{Battery Warning}
+\begin{frame}{label=bwarning}
+    \frametitle{\insertsectionhead}
+    \begin{itemize}
+        \item Warning for battery value below 3.4V
+        \item Error for battery value 3 consecutive times below 3.4V
+    \end{itemize}
+\end{frame}
+
 %---------------------------------------------------------------------
 
 \section{Setup of the navstack}
-\begin{frame}[label=agenda]
+\begin{frame}[label=navstack]
 	\frametitle{\insertsectionhead}%
         \begin{itemize}
         \item Followed ROS tutorial
@@ -110,38 +123,47 @@
             \end{itemize}
         \item New repo hamster\textunderscore2dnav
     \end{itemize}
+        \begin{center}
+            \begin{figure}
+                    \includegraphics[width=0.6\linewidth]{Presentations/LaTeX/images/nav_stack_tutorial.png}
+                    \caption{Navigation Stack on a Robot}
+                    \label{fig:nav_stack_tut}
+            \end{figure}
+            \tiny{\url{http://wiki.ros.org/navigation/Tutorials/RobotSetup}}
+        \end{center}
+        
 
-        \begin{figure}
-                \centering
-                \includegraphics[width=0.7\linewidth]{Presentations/LaTeX/images/nav_stack_tutorial.png}
-                \caption{Navigation Stack on a Robot}
-                \label{fig:enter-label}
-        \end{figure}
 \end{frame}
 %---------------------------------------------------------------------
 
-\section{The first challenges}
-\begin{frame}[label=agenda]
+\begin{frame}[label=challenges_navstack]
 	\frametitle{\insertsectionhead}%
-\begin{itemize}
-  \item Overwriting of map:
-  \begin{itemize}
-    \item During trying out \texttt{move\_base.launch}
-    \item Solution: kill \texttt{slam\_gmapping}
-  \end{itemize}
-  \item Planner was not supporting Ackermann, 2 options:
-  \begin{itemize}
-    \item \texttt{sbpl\_lattice\_planner}
-    \item \texttt{teb\_local\_planner}
-  \end{itemize}
-\end{itemize}
-
+    \textbf{Challenges}
+    \begin{itemize}
+      \item<1-> \onslide<1->{  Overwriting of map:
+          \begin{itemize}
+            \item During trying out \texttt{move\_base.launch}
+            \item Solution: run either \texttt{slam\_gmapping} or \texttt{amcl} with \texttt{move\_base}
+          \end{itemize}}
+      \only<2->{ \item Planner was not supporting Ackermann, 2 options:
+          \begin{itemize}
+            \item \texttt{sbpl\_lattice\_planner}
+            \item \texttt{teb\_local\_planner}
+          \end{itemize}}
+      \only<3-> {\item \texttt{twist\_to\_ackermann\_node} did not work as intended
+          \begin{itemize}
+              \item changed file provided by cogniteam
+              \item corrected conversion of velocity input into steering angle
+          \end{itemize}}
+    \end{itemize}
 \end{frame}
 %---------------------------------------------------------------------
-\section{SBPL planner integration}
-\begin{frame}[label=agenda]
+\section{Planner integration}
+\subsection{SBPL}
+\begin{frame}[label=sbpl]
 	\frametitle{\insertsectionhead}%
     \begin{minipage}{0.7\textwidth}
+        \textbf{\insertsubsectionhead}
         \begin{itemize}
             \item No tutorial
             \begin{itemize}
@@ -162,39 +184,41 @@
     \end{minipage}
 \end{frame}
 %---------------------------------------------------------------------
-\section{TEB planner integration}
-\begin{frame}[label=agenda]
+\subsection{TEB}
+\begin{frame}[label=teb]
 	\frametitle{\insertsectionhead}%
      \begin{minipage}{0.7\textwidth}
-
-\begin{itemize}
-  \item Utilizes the Timed Elastic Band method for path planning.
-  \item Accommodates non-holonomic and kinematic constraints of vehicles.
-  \item Supports obstacle avoidance using costmaps.
-  \item Offers a variety of customizable parameters for tailored planning.
-  \item Compatible with ROS \texttt{move\_base} node.
-\end{itemize}
+        \textbf{\insertsubsectionhead}
+        \begin{itemize}
+          \item Timed Elastic Band method
+          \item Non-holonomic and kinematic constraints of vehicles
+          \item Obstacle avoidance using costmaps
+          \item Variety of customizable parameters
+          \item Compatible with ROS \texttt{move\_base} node
+        \end{itemize}
     \end{minipage}%
     \begin{minipage}{0.3\textwidth}
         \vspace{1cm}
-
-        \begin{figure}
-            \centering
-            \includegraphics[width=1\linewidth]{Presentations/LaTeX/images/teb.png}
-            \caption{TEB planner}
-            \label{fig:enter-label}
-        \end{figure}
+        \begin{center}
+            \begin{figure}
+                \includegraphics[width=1\linewidth]{Presentations/LaTeX/images/teb.png}
+                \caption{TEB planner}
+                \label{fig:teb}
+            \end{figure}
+            \tiny{\url{https://hackmd.io/@Unmesh/rkUi8MJMI}}
+        \end{center}
     \end{minipage}
 \end{frame}
 %---------------------------------------------------------------------
-\section{Challenge: localization}
-\begin{frame}[label=agenda]
+\subsection{Challenge: localization}
+\begin{frame}[label=challenge_localization]
 	\frametitle{\insertsectionhead}%
+         \textbf{\insertsubsectionhead}
      \begin{itemize}
         \item Inaccurate odometry provided by Cogniteam
         \begin{itemize}
-            \item Durch Ackermann-Steuerung funktioniert Lokalisation durch Odometrie nicht
-            \item Lokalisation soll nur durch LaserScan funktionieren
+            \item Due to Ackermann-steering the localization by odometry did not work
+            \item Localization should work just with LaserScan
         \end{itemize}
         \item \texttt{laser\_scan\_matcher}
         \begin{itemize}
@@ -203,105 +227,98 @@
      \end{itemize}
 \end{frame}
 
-%---------------------------------------------------------------------
-%\section{}
-%\begin{frame}[label=agenda]
-%	\frametitle{\insertsectionhead}%
-% \begin{figure}[h!]
-%   \centering
-%   \includemedia[
-%     width=0.6\linewidth,
-%     height=0.45\linewidth,
-%     activate=pageopen,
-%     addresource=Presentations/LaTeX/images/Video.MOV, % Pfad zu Ihrer Videodatei
-%     flashvars={
-%       source=Presentations/LaTeX/images/Video.MOV % Der Dateiname muss nach 'addresource' wiederholt werden
-%       &autoPlay=true % Video wird automatisch abgespielt, wenn das PDF geöffnet wird
-%     }
-%   ]{}{VPlayer.swf}
-%   \caption{Demonstration des TEB Local Planners.}
-% \end{figure}
-%\end{frame}
+% ---------------------------------------------------------------------
+\begin{frame}[label=video]
+	\frametitle{\insertsectionhead}
+         \textbf{\insertsubsectionhead}
+    \begin{center}
+          \includemedia[
+      width=0.7\linewidth,
+      height=0.4549\linewidth,
+      activate=pageopen,
+      addresource=Presentations/LaTeX/images/video.mp4,
+      flashvars={source=Presentations/LaTeX/images/video.mp4}
+    ]{}{VPlayer.swf}  
+    \end{center}
+\end{frame}
 
 %---------------------------------------------------------------------
-\section{TEB parametrization}
-\begin{frame}{label=agenda}
+\subsection{TEB parametrization}
+\begin{frame}{label=teb_param}
     \frametitle{\insertsectionhead}
+    \textbf{\insertsubsectionhead}
     \begin{itemize}
         \item Minimum turning radius
-        \item Footprint model (point)
-        \item Publish feedback
+        \item Publish feedback (for rviz)
         \item Maximum acceleration
         \item Wheelbase
         \item Goal tolerance (angle and euclidean distance)
         \item Min\_obstacle\_dist
-
     \end{itemize}
 \end{frame}
 
 %---------------------------------------------------------------------
 \section{Emergency Stop}
-\begin{frame}{label=agenda}
+\begin{frame}{label=estop}
     \frametitle{\insertsectionhead}
     \begin{minipage}{0.4\textwidth}
         \begin{itemize}
-            \item Robot stops when there are points registered:
+            \item<1-> Robot stops when there are points registered:
             \begin{itemize}
                 \item Between min\_angle and max\_angle
                 \item Nearer than obstacle\_distance
             \end{itemize}
-            \item \texttt{twist\_mux} to get correct priorities for input
+            \only<3->{\item \texttt{twist\_mux} to get correct priorities for input}
         \end{itemize}
     \end{minipage}%
     \begin{minipage}{0.6\textwidth}
+    \begin{center}
+        \vspace{0.5cm}
         \begin{figure}
-            \centering
-            \includegraphics[width=\textwidth]{Presentations/LaTeX/images/twist_mux.jpeg}
-            \caption{Structure of the twist\_mux}
-            \label{fig:enter-label}
+            \begin{overprint}
+                \onslide<1>\includegraphics[width=\textwidth]{Presentations/LaTeX/images/estop-normal.jpeg}
+                    \caption{Anglular parameters}
+                \onslide<2>\includegraphics[width=\textwidth]{Presentations/LaTeX/images/estop-ausnahmefall.jpeg}
+                    \caption{Angular parameters: special case}
+                \onslide<3>\includegraphics[width=\textwidth]{Presentations/LaTeX/images/twist_mux.jpeg}
+                    \caption{Structure of the twist\_mux}
+                    \label{fig:tmux}
+            \end{overprint}
+            
         \end{figure}
+    \end{center}
     \end{minipage}
 \end{frame}
 
-%---------------------------------------------------------------------
-\begin{frame}{label=agenda}
-    \frametitle{\insertsectionhead}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/estop-normal.jpeg}
-    \end{center}
-\end{frame}
+% %---------------------------------------------------------------------
+% \begin{frame}{label=estop_1}
+%     \frametitle{\insertsectionhead}
+%     \begin{center}
+%         \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/estop-normal.jpeg}
+%     \end{center}
+% \end{frame}
+
+% %---------------------------------------------------------------------
+% \begin{frame}{label=estop_2}
+%     \frametitle{\insertsectionhead}
+%     \begin{center}
+%         \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/estop-ausnahmefall.jpeg}
+%     \end{center}
+% \end{frame}
 
 %---------------------------------------------------------------------
-\begin{frame}{label=agenda}
-    \frametitle{\insertsectionhead}
-    \begin{center}
-        \includegraphics[width=0.8\textwidth]{Presentations/LaTeX/images/estop-ausnahmefall.jpeg}
-    \end{center}
-\end{frame}
+% \subsection{Point Cloud}
+% \begin{frame}{label=point_cloud}
+%     \frametitle{\insertsectionhead}
+%     \textbf{\insertsubsectionhead}
+%     \begin{itemize}
+%         \item Camera doesn’t acquire point cloud data but depth images
+%         \item Hardware does not allow working with point clouds
+%         \item If hardware allows using point clouds: package laserscan-to-pointcloud
+%         \item Implement nodes that subscribe to data input and publish LaserScan data to next node (emergency stop)
 
-%---------------------------------------------------------------------
-\section{Point Cloud}
-\begin{frame}{label=agenda}
-    \frametitle{\insertsectionhead}
-    \begin{itemize}
-        \item Camera doesn’t acquire point cloud data but depth images
-        \item Hardware does not allow working with point clouds
-        \item If hardware allows using point clouds: package laserscan-to-pointcloud
-        \item Implement nodes that subscribe to data input and publish LaserScan data to next node (emergency stop)
-
-    \end{itemize}
-\end{frame}
-
-%---------------------------------------------------------------------
-\section{Battery Warning}
-\begin{frame}{label=agenda}
-    \frametitle{\insertsectionhead}
-    \begin{itemize}
-        \item Battery suddenly died
-        \item Warning for battery value below 3.4V
-        \item Error for battery value 3 consecutive times below 3.4V
-    \end{itemize}
-\end{frame}
+%     \end{itemize}
+% \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
